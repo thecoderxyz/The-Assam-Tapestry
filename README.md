@@ -1,5 +1,101 @@
-<div id="top" align="center"><img src="https://www.google.com/search?q=https://placehold.co/900x250/1a202c/90cdf4%3Ftext%3DThe%2BAssam%2BTapestry" alt="Game Banner for The Assam Tapestry" style="border-radius: 10px;"/><h1 style="font-size: 3rem; font-weight: bold;">The Assam Tapestry</h1><p><strong>An interactive historical fiction game where your choices weave the destiny of Assam.</strong></p><p><a href="#-about-the-game"><strong>About</strong></a> ·<a href="#-key-features"><strong>Features</strong></a> ·<a href="#-tech-stack"><strong>Tech Stack</strong></a> ·<a href="#-getting-started"><strong>Getting Started</strong></a> ·<a href="#-contributing"><strong>Contributing</strong></a></p><p><img src="https://www.google.com/search?q=https://img.shields.io/badge/React-20232A%3Fstyle%3Dfor-the-badge%26logo%3Dreact%26logoColor%3D61DAFB" alt="React Badge"/><img src="https://www.google.com/search?q=https://img.shields.io/badge/TypeScript-007ACC%3Fstyle%3Dfor-the-badge%26logo%3Dtypescript%26logoColor%3Dwhite" alt="TypeScript Badge"/><img src="https://www.google.com/search?q=https://img.shields.io/badge/Vite-646CFF%3Fstyle%3Dfor-the-badge%26logo%3Dvite%26logoColor%3Dwhite" alt="Vite Badge"/><img src="https://www.google.com/search?q=https://img.shields.io/badge/Tailwind_CSS-38B2AC%3Fstyle%3Dfor-the-badge%26logo%3Dtailwind-css%26logoColor%3Dwhite" alt="Tailwind CSS Badge"/></p></div>📜 About The GameThe Assam Tapestry is a browser-based narrative experience that places you in the role of a "Time-Weaver." You will journey through pivotal moments in Assam's rich history, from the battlefields of the Ahom Kingdom to the vibrant, modern-day cultural scenes. Every choice you make pulls a new thread, creating a unique and personal story. Will your influence lead to glory, tragedy, or a new path altogether? The loom of time is yours to command.✨ Key FeaturesFeatureDescriptionBranching NarrativeYour decisions have real consequences, leading to multiple outcomes and endings across 14+ chapters.Historical ImmersionEncounter legendary figures like Lachit Borphukan and Bhupen Hazarika in historically inspired settings.Dynamic AtmosphereThe UI, colors, and sounds adapt to each era, providing a deeply immersive experience.Achievement SystemUnlock achievements by discovering secret paths, making bold choices, and reaching key milestones.Persistent ProgressYour journey is automatically saved in your browser, so you can always pick up where you left off.Responsive DesignEnjoy a seamless experience whether you're playing on a desktop, tablet, or mobile device.📸 Live Demo & Screenshots➡️ Click here to play the live game! (Replace with your actual deployment link)<div align="center"><img src="https://www.google.com/search?q=https://placehold.co/600x350/111827/ffffff%3Ftext%3DGameplay%2BScreenshot" alt="Gameplay Screenshot of The Assam Tapestry" style="border-radius: 8px; margin: 10px; border: 1px solid #333;" width="75%"/></div>🛠️ Tech StackThis project leverages a modern, efficient, and type-safe technology stack to deliver a polished experience.<details><summary><strong>Click to see the full A-Z Technology List</strong></summary><ul><li><strong>CSS:</strong> Custom styling for animations, transitions, and unique visual elements.</li><li><strong>Git & GitHub:</strong> Version control and project collaboration.</li><li><strong>HTML5:</strong> The core markup for structuring the application.</li><li><strong>NPM (Node Package Manager):</strong> Dependency management and script execution.</li><li><strong>React (v18):</strong> The foundational UI library for building a component-driven application.</li><li><strong>React Hooks (<code>useState</code>, <code>useEffect</code>):</strong> For managing local component state and handling side-effects like sound playback and achievements.</li><li><strong>Tailwind CSS:</strong> A utility-first CSS framework for rapid, responsive, and consistent UI design.</li><li><strong>TypeScript:</strong> For static typing, ensuring code reliability, scalability, and an improved developer experience.</li><li><strong>Vite:</strong> A lightning-fast build tool and development server that provides an exceptional workflow.</li><li><strong>Zustand:</strong> A minimalist state management solution used for the global game state (current chapter, choices, etc.), providing a simple yet powerful way to share state across components.</li></ul></details>🚀 Getting StartedTo get a local copy up and running, follow these simple steps.PrerequisitesYou must have the following software installed on your machine:Node.js (v18.x or higher)npm (v9.x or higher) or yarnInstallationClone the repository to your local machine:git clone [https://github.com/your-username/the-assam-tapestry.git](https://github.com/your-username/the-assam-tapestry.git)
-Navigate into the project directory:cd the-assam-tapestry
-Install all the necessary dependencies:npm install
-Launch the development server:npm run dev
-Your project will now be available at http://localhost:5173.🤝 ContributingContributions are the lifeblood of the open-source community. If you have an idea for a new chapter, a feature enhancement, or a bug fix, please feel free to contribute!Fork the ProjectCreate your Feature Branch (git checkout -b feature/NewAwesomeChapter)Commit your Changes (git commit -m 'feat: Add a new chapter about the Bihu festival')Push to the Branch (git push origin feature/NewAwesomeChapter)Open a Pull RequestDon't forget to give the project a star ⭐ if you've enjoyed the journey!✍️ AuthorRanjit Nath📧 Email: imranjitnath@gmail.com🐙 GitHub: your-username (Please replace with your GitHub username)📄 LicenseThis project is licensed under the MIT License. See the LICENSE file for more details.🙏 AcknowledgmentsTo the rich history and culture of Assam for providing endless inspiration.To all the open-source developers whose tools made this project possible.<p align="right">(<a href="#top">back to top</a>)</p>
+<div id="top" align="center">
+
+![Game Banner for The Assam Tapestry](https://placehold.co/900x250/1a202c/90cdf4?text=The+Assam+Tapestry)
+
+# 🎮 The Assam Tapestry  
+**An interactive historical fiction game where your choices weave the destiny of Assam.**
+
+[**About**](#-about-the-game) · [**Features**](#-key-features) · [**Tech Stack**](#-tech-stack) · [**Getting Started**](#-getting-started) · [**Contributing**](#-contributing)
+
+![React Badge](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![TypeScript Badge](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
+![Vite Badge](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)
+![Tailwind CSS Badge](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+
+</div>
+
+---
+
+## 📜 About The Game
+
+**The Assam Tapestry** is a browser-based narrative experience that places you in the role of a **"Time-Weaver"**.  
+You will journey through pivotal moments in Assam's rich history — from the **battlefields of the Ahom Kingdom** to the **vibrant, modern-day cultural scenes**.  
+
+Every choice you make pulls a new thread, creating a **unique and personal story**.  
+Will your influence lead to **glory**, **tragedy**, or a **new path altogether**?  
+🧵 *The loom of time is yours to command.*
+
+---
+
+## ✨ Key Features
+
+| Feature | Description |
+|----------|-------------|
+| **Branching Narrative** | Your decisions have real consequences, leading to multiple outcomes and endings across 14+ chapters. |
+| **Historical Immersion** | Encounter legendary figures like *Lachit Borphukan* and *Bhupen Hazarika* in historically inspired settings. |
+| **Dynamic Atmosphere** | The UI, colors, and sounds adapt to each era, providing a deeply immersive experience. |
+| **Achievement System** | Unlock achievements by discovering secret paths, making bold choices, and reaching key milestones. |
+| **Persistent Progress** | Your journey is automatically saved in your browser. Continue anytime. |
+| **Responsive Design** | Enjoy a seamless experience on desktop, tablet, or mobile. |
+
+---
+
+## 📸 Live Demo & Screenshots
+
+➡️ **[Play the Live Game](https://your-deployment-link.com)**  
+*(Replace with your actual deployment link)*
+
+<div align="center">
+
+![Gameplay Screenshot](https://placehold.co/600x350/111827/ffffff?text=Gameplay+Screenshot)
+
+</div>
+
+---
+
+## 🛠️ Tech Stack
+
+This project leverages a modern, efficient, and type-safe stack to deliver a polished experience.
+
+<details>
+<summary><strong>Click to view the full A–Z Technology List</strong></summary>
+
+- **CSS** – Custom animations, transitions, and unique visuals.  
+- **Git & GitHub** – Version control and collaboration.  
+- **HTML5** – Core markup and structure.  
+- **NPM** – Dependency management and scripts.  
+- **React (v18)** – Component-driven UI library.  
+- **React Hooks** – (`useState`, `useEffect`) for state and effects.  
+- **Tailwind CSS** – Utility-first, responsive styling.  
+- **TypeScript** – Static typing for reliability and scalability.  
+- **Vite** – Lightning-fast build tool and dev server.  
+- **Zustand** – Lightweight global state management.
+
+</details>
+
+---
+
+## 🚀 Getting Started
+
+Follow these steps to set up the project locally:
+
+### Prerequisites
+
+You’ll need:
+- **Node.js** (v18.x or higher)  
+- **npm** (v9.x or higher) or **yarn**
+
+### Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/your-username/the-assam-tapestry.git
+
+# Navigate to project folder
+cd the-assam-tapestry
+
+# Install dependencies
+npm install
+
+# Run development server
+npm run dev
