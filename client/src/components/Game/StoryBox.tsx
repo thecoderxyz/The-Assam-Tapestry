@@ -13,69 +13,91 @@ export default function StoryBox() {
 
   useEffect(() => {
     checkAchievements();
-    
+
     // Play stage sound effect automatically
     if (currentChapter && currentStage) {
       const chapter = storyData[currentChapter];
-      const stage = chapter.stages[currentStage];
-      if (stage.sound) {
-        playSound(stage.sound);
+      // Safely check if chapter and stage exist before accessing sound
+      if (chapter && chapter.stages[currentStage]) {
+        const stage = chapter.stages[currentStage];
+        if (stage.sound) {
+          playSound(stage.sound);
+        }
       }
     }
   }, [currentStage, checkAchievements, playSound, currentChapter]);
 
-  if (!currentChapter || !currentStage) return null;
+  // Initial guard clause for empty state
+  if (!currentChapter || !currentStage) {
+    return null;
+  }
 
   const chapter = storyData[currentChapter];
-  const stage = chapter.stages[currentStage];
+  // Safely get the stage, checking if the chapter exists first
+  const stage = chapter ? chapter.stages[currentStage] : undefined;
+
+  // CRITICAL FIX: If chapter or stage data is invalid, log an error and render nothing.
+  // This prevents the crash and is the reason the story box "disappears" if data is wrong.
+  if (!chapter || !stage) {
+    console.error(
+      `Story Data Error: Could not find data for chapter "${currentChapter}" or stage "${currentStage}". Please check your storyData.ts file.`
+    );
+    return null; // Return null to prevent the app from crashing
+  }
 
   const handleChoice = (choice: any) => {
     // Track choice made
     const choiceKey = `${currentChapter}:${currentStage}:${choice.text}`;
     addChoice(choiceKey);
-    
+
     // Play sound
-    playSound('choice');
-    
+    playSound("choice");
+
     const nextChapter = choice.chapter || currentChapter;
     const nextStage = choice.next;
-    
+
+    // --- DEBUGGING HELPER ---
+    // This will tell you exactly which chapter and stage it's trying to load next.
+    // Check your console when the story disappears to find the problem.
+    console.log("Attempting to load:", { nextChapter, nextStage });
+    // -------------------------
+
     setStage(nextChapter, nextStage);
-    
+
     // Auto-save after each choice
     setTimeout(() => saveGame(), 100);
   };
 
   const handleManualSave = () => {
     saveGame();
-    playSound('success');
+    playSound("success");
   };
 
   const getChapterTheme = () => {
     switch (currentChapter) {
-      case 'chapter1':
+      case "chapter1":
         return {
-          gradient: 'from-amber-900/20 to-gray-800/20',
-          border: 'border-amber-700/50',
-          glow: 'shadow-amber-900/30'
+          gradient: "from-amber-900/20 to-gray-800/20",
+          border: "border-amber-700/50",
+          glow: "shadow-amber-900/30",
         };
-      case 'chapter2':
+      case "chapter2":
         return {
-          gradient: 'from-blue-900/20 to-gray-800/20',
-          border: 'border-blue-700/50',
-          glow: 'shadow-blue-900/30'
+          gradient: "from-blue-900/20 to-gray-800/20",
+          border: "border-blue-700/50",
+          glow: "shadow-blue-900/30",
         };
-      case 'chapter3':
+      case "chapter3":
         return {
-          gradient: 'from-emerald-900/20 to-gray-800/20',
-          border: 'border-emerald-700/50',
-          glow: 'shadow-emerald-900/30'
+          gradient: "from-emerald-900/20 to-gray-800/20",
+          border: "border-emerald-700/50",
+          glow: "shadow-emerald-900/30",
         };
       default:
         return {
-          gradient: 'from-gray-800/20 to-gray-900/20',
-          border: 'border-gray-700/50',
-          glow: 'shadow-gray-900/30'
+          gradient: "from-gray-800/20 to-gray-900/20",
+          border: "border-gray-700/50",
+          glow: "shadow-gray-900/30",
         };
     }
   };
@@ -84,7 +106,7 @@ export default function StoryBox() {
 
   return (
     <div className="w-full mb-8 px-2 sm:px-4">
-      <div 
+      <div
         className={`w-full max-w-4xl mx-auto animate-fade-in bg-gradient-to-br ${theme.gradient} backdrop-blur-lg border-2 ${theme.border} rounded-xl p-3 sm:p-4 md:p-6 shadow-2xl ${theme.glow}`}
       >
         {/* Chapter indicator */}
@@ -95,11 +117,13 @@ export default function StoryBox() {
             </span>
           </div>
           <div className="flex gap-1.5 sm:gap-2">
-            {['chapter1', 'chapter2', 'chapter3'].map((ch, idx) => (
+            {["chapter1", "chapter2", "chapter3"].map((ch) => (
               <div
                 key={ch}
                 className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                  ch === currentChapter ? 'bg-teal-400 w-4 sm:w-6' : 'bg-gray-600'
+                  ch === currentChapter
+                    ? "bg-teal-400 w-4 sm:w-6"
+                    : "bg-gray-600"
                 }`}
               />
             ))}
@@ -108,9 +132,9 @@ export default function StoryBox() {
 
         {/* Image Container */}
         <div className="mb-4 sm:mb-6 rounded-lg overflow-hidden border-2 border-gray-600/50 shadow-xl animate-slide-in">
-          <img 
-            src={stage.image} 
-            alt="Scene" 
+          <img
+            src={stage.image}
+            alt="Scene"
             className="w-full h-48 sm:h-56 md:h-64 object-cover transition-transform duration-300 hover:scale-105"
           />
         </div>
@@ -129,7 +153,9 @@ export default function StoryBox() {
               className="group relative w-full bg-gradient-to-br from-gray-800 to-gray-900 p-3 sm:p-4 rounded-lg shadow-md text-left text-gray-200 border-2 border-gray-600 transition-all duration-300 hover:bg-gradient-to-br hover:from-teal-800 hover:to-gray-800 hover:scale-105 hover:shadow-xl hover:border-teal-400 overflow-hidden"
             >
               <div className="absolute inset-0 bg-gradient-to-r from-teal-500/0 via-teal-500/10 to-teal-500/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
-              <span className="relative z-10 font-medium text-sm sm:text-base">{choice.text}</span>
+              <span className="relative z-10 font-medium text-sm sm:text-base">
+                {choice.text}
+              </span>
             </button>
           ))}
         </div>
