@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Echoes of Eternity: An Assam Saga</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.77/Tone.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Tiro+Bangla&family=Lora:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Lora', serif;
+            background-color: #111827;
+            color: #e5e7eb;
+            overflow: hidden;
+        }
+        #game-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+        }
+        .ui-container {
+            position: relative;
+            z-index: 1;
+            background: linear-gradient(to top, rgba(17, 24, 39, 1) 0%, rgba(17, 24, 39, 0.8) 50%, rgba(17, 24, 39, 0) 100%);
+        }
+        .story-box {
+            background-color: rgba(31, 41, 55, 0.7);
+            border: 1px solid #4b5563;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            max-width: 56rem;
+            margin: 0 auto;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .choice-button {
+            transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
+            border: 1px solid #4b5563;
+        }
+        .choice-button:hover {
+            background-color: #4b5563;
+            transform: scale(1.02);
+            box-shadow: 0 0 15px rgba(110, 231, 183, 0.4);
+        }
+        #start-screen, #end-screen {
+            background: #111827;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+        }
+        .tiro-bangla-regular {
+            font-family: "Tiro Bangla", serif;
+        }
+        .animate-fade-in {
+            animation: fadeIn 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        #image-container {
+            border-radius: 0.5rem;
+            overflow: hidden;
+            border: 1px solid #4b5563;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+    </style>
+</head>
+<body>
+
+    <div id="start-screen" class="absolute top-0 left-0 w-full h-full">
+        <div class="text-center p-8 animate-fade-in">
+            <h1 class="text-4xl md:text-6xl font-bold text-teal-300 tiro-bangla-regular">চিৰন্তন પડધ്বনি</h1>
+            <h2 class="text-2xl md:text-4xl font-bold text-gray-200 mb-4">Echoes of Eternity: An Assam Saga</h2>
+            <p class="mb-8 max-w-2xl mx-auto text-gray-400">You are a Time Weaver, a silent guardian of Assam's spirit. Journey through its history, meet its legends, and make choices that will echo through eternity. The tapestry of time awaits.</p>
+            <button id="start-button" class="bg-teal-500 text-gray-900 font-bold py-3 px-8 rounded-lg shadow-lg hover:bg-teal-400 transition duration-300 text-lg">Weave the First Thread</button>
+        </div>
+    </div>
+
+    <canvas id="game-canvas"></canvas>
+
+    <div id="game-container" class="min-h-screen w-full ui-container flex items-end hidden">
+        <div id="story-box-content" class="story-box w-full mb-8 animate-fade-in">
+            <div id="image-container" class="mb-4">
+                <!-- Dynamic Image Goes Here -->
+            </div>
+            <div id="story-text" class="text-lg leading-relaxed mb-6 text-gray-300">
+                <!-- Story text goes here -->
+            </div>
+            <div id="choices-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Choices go here -->
+            </div>
+        </div>
+    </div>
+    
+    <div id="end-screen" class="absolute top-0 left-0 w-full h-full hidden">
+        <div class="text-center p-8 animate-fade-in">
+            <h2 class="text-3xl md:text-5xl font-bold text-teal-300 mb-4">The Tapestry is Woven</h2>
+            <p class="mb-8 max-w-2xl mx-auto text-gray-400">You have witnessed the echoes of Assam's soul. The past, present, and future are intertwined. Thank you for your journey, Time Weaver.</p>
+            <button id="restart-button" class="bg-teal-500 text-gray-900 font-bold py-3 px-8 rounded-lg shadow-lg hover:bg-teal-400 transition duration-300 text-lg">Weave a New Story</button>
+        </div>
+    </div>
+
+
+<script>
+// --- GLOBAL ELEMENTS ---
+const startButton = document.getElementById('start-button');
+const restartButton = document.getElementById('restart-button');
+const startScreen = document.getElementById('start-screen');
+const endScreen = document.getElementById('end-screen');
+const gameContainer = document.getElementById('game-container');
+const storyBoxContent = document.getElementById('story-box-content');
+const storyTextElement = document.getElementById('story-text');
+const choicesContainer = document.getElementById('choices-container');
+const imageContainer = document.getElementById('image-container');
+const canvas = document.getElementById('game-canvas');
+
+// --- GAME STATE ---
+let gameState = {
+    currentChapter: null,
+    currentStage: null,
+};
+
+// --- SOUND ENGINE (Tone.js) ---
+let synth, melodySynth, noise;
+function setupSounds() {
+    synth = new Tone.Synth().toDestination();
+    melodySynth = new Tone.FMSynth().toDestination();
+    melodySynth.volume.value = -6;
+    noise = new Tone.Noise("pink").toDestination();
+    noise.volume.value = -35;
+}
+
+function playSound(type) {
+    if (!synth) return; // Don't play if not initialized
+    Tone.start();
+    if (type === 'choice') synth.triggerAttackRelease("G3", "8n");
+    if (type === 'war_horn') synth.triggerAttackRelease("D3", "1n");
+    if (type === 'melody_note') melodySynth.triggerAttackRelease("A4", "4n");
+    if (type === 'modern_beat') {
+        const now = Tone.now();
+        synth.triggerAttackRelease("C2", "8n", now);
+        synth.triggerAttackRelease("G2", "8n", now + 0.25);
+    }
+    if (type === 'success') {
+        const now = Tone.now();
+        melodySynth.triggerAttackRelease("C5", "8n", now);
+        melodySynth.triggerAttackRelease("G5", "8n", now + 0.2);
+    }
+}
+
+// --- 3D SCENE (Three.js) ---
+let scene, camera, renderer, clock, sceneObjects = {};
+function init3D() {
+    scene = new THREE.Scene();
+    camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setClearColor(0x000000, 0);
+
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+    scene.add(ambientLight);
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+    directionalLight.position.set(5, 10, 7.5);
+    scene.add(directionalLight);
+
+    camera.position.z = 8;
+    clock = new THREE.Clock();
+
+    animate();
+}
+
+function update3DScene(sceneData) {
+    // Clear previous objects
+    Object.values(sceneObjects).forEach(obj => scene.remove(obj));
+    sceneObjects = {};
+
+    // Create new scene based on data
+    if (sceneData.type === 'ahom') {
+        scene.background = new THREE.Color(0x2c1a2b);
+        const pyramidGeo = new THREE.ConeGeometry(1, 2, 4);
+        const pyramidMat = new THREE.MeshLambertMaterial({ color: 0x5a3d34 });
+        for (let i = 0; i < 5; i++) {
+            const pyramid = new THREE.Mesh(pyramidGeo, pyramidMat);
+            pyramid.position.set((Math.random() - 0.5) * 20, -1, (Math.random() - 0.5) * 10 - 5);
+            pyramid.rotation.y = Math.random() * Math.PI;
+            scene.add(pyramid);
+            sceneObjects[`p${i}`] = pyramid;
+        }
+    } else if (sceneData.type === 'maestro') {
+        scene.background = new THREE.Color(0x1d3a58);
+        const noteGeo = new THREE.TorusGeometry(0.5, 0.2, 8, 16);
+        const noteMat = new THREE.MeshBasicMaterial({ color: 0xe0e7ff, transparent: true, opacity: 0.5 });
+        for (let i = 0; i < 8; i++) {
+            const note = new THREE.Mesh(noteGeo, noteMat);
+            note.position.set((Math.random() - 0.5) * 25, (Math.random() - 0.5) * 10, -Math.random() * 10);
+            scene.add(note);
+            sceneObjects[`n${i}`] = note;
+        }
+    } else if (sceneData.type === 'modern') {
+        scene.background = new THREE.Color(0x111827);
+        const boxGeo = new THREE.BoxGeometry(1, 1, 1);
+        const boxMat = new THREE.MeshBasicMaterial({ color: 0x34d399, wireframe: true });
+        for (let i = 0; i < 10; i++) {
+            const box = new THREE.Mesh(boxGeo, boxMat);
+            box.position.set((Math.random() - 0.5) * 20, (Math.random() - 0.5) * 10, (Math.random() - 0.5) * 10);
+            scene.add(box);
+            sceneObjects[`b${i}`] = box;
+        }
+    }
+}
+
+
+function animate() {
+    requestAnimationFrame(animate);
+    const delta = clock.getDelta();
+    // Animate scene objects
+    Object.values(sceneObjects).forEach(obj => {
+        obj.rotation.y += delta * 0.2;
+    });
+    if (renderer) renderer.render(scene, camera);
+}
+
+
+// --- GAME CONTENT ---
+const storyData = {
+    chapter1: {
+        title: "Ahom Valor",
+        startStage: "intro",
+        stages: {
+            intro: {
+                text: "You drift through time to the 17th century. The Ahom Kingdom is at its peak, but the shadow of the Mughal Empire looms. You find yourself in the war council of King Chakradhwaj Singha. A young commander, Lachit Borphukan, awaits his moment.",
+                image: "https://placehold.co/600x300/5a3d34/ffffff?text=Lachit+Borphukan",
+                scene: { type: 'ahom' },
+                sound: 'war_horn',
+                choices: [{ text: "Observe the council", next: "council" }]
+            },
+            council: {
+                text: "The King is furious over the Mughal occupation of Guwahati. 'How can my people thrive under foreign rule?' he roars. He needs a commander who can lead their forces. Who should he choose?",
+                image: "https://placehold.co/600x300/784d3f/ffffff?text=The+Royal+Court",
+                scene: { type: 'ahom' },
+                choices: [
+                    { text: "Advise him to trust the fiery passion of Lachit.", next: "lachit_chosen" },
+                    { text: "Suggest a more experienced, cautious general.", next: "cautious_general" }
+                ]
+            },
+            lachit_chosen: {
+                text: "The King sees the fire in Lachit's eyes and appoints him Borphukan, the commander-in-chief. Lachit's preparation for the Battle of Saraighat begins. His leadership is inspiring, uniting the kingdom.",
+                image: "https://placehold.co/600x300/8b5d4a/ffffff?text=Battle+of+Saraighat",
+                scene: { type: 'ahom' },
+                sound: 'success',
+                choices: [{ text: "Witness the victory", next: "chapter2", chapter: "chapter2" }]
+            },
+            cautious_general: {
+                text: "The cautious general fails to inspire the troops. Disunity spreads, and the Ahom forces are unable to reclaim their territory. A pivotal moment is lost. Your thread unravels... but the tapestry of time allows you to weave again.",
+                image: "https://placehold.co/600x300/4a3d34/c7c7c7?text=A+Lost+Opportunity",
+                 scene: { type: 'ahom' },
+                choices: [{ text: "Retry the choice", next: "council" }]
+            }
+        }
+    },
+    chapter2: {
+        title: "The Maestro's Melody",
+        startStage: "intro",
+        stages: {
+            intro: {
+                text: "You arrive in the 20th century. The air is thick with artistic fervor and a quest for identity. You see a young man with a powerful voice and a pen that flows like the Brahmaputra itself: Bhupen Hazarika.",
+                image: "https://placehold.co/600x300/1d3a58/ffffff?text=Bhupen+Hazarika",
+                scene: { type: 'maestro' },
+                sound: 'melody_note',
+                choices: [{ text: "Listen to his music", next: "music" }]
+            },
+            music: {
+                text: "Bhupen Hazarika's songs speak of unity, love, and the struggles of the common person. He has an opportunity to take his music to a global stage, but some fear it will dilute its Assamese soul. What should he do?",
+                image: "https://placehold.co/600x300/2e4a6c/ffffff?text=The+Global+Stage",
+                scene: { type: 'maestro' },
+                choices: [
+                    { text: "Encourage him to share Assam's voice with the world.", next: "global_voice" },
+                    { text: "Advise him to focus only on his regional audience.", next: "regional_focus" }
+                ]
+            },
+            global_voice: {
+                text: "He travels the world, becoming a cultural ambassador. His song 'Bistirno Parore' becomes a global anthem for humanism. He proves that a voice from the Brahmaputra valley can resonate in every corner of the earth.",
+                image: "https://placehold.co/600x300/4a6c8c/ffffff?text=A+Voice+for+the+World",
+                scene: { type: 'maestro' },
+                sound: 'success',
+                choices: [{ text: "Follow the next echo", next: "chapter3", chapter: "chapter3" }]
+            },
+             regional_focus: {
+                text: "He remains a beloved regional icon, but the world never fully experiences the depth of his artistry. His influence is immense, but a chance to build a global bridge is missed. The tapestry has a muted thread.",
+                image: "https://placehold.co/600x300/1d2a38/c7c7c7?text=A+Regional+Treasure",
+                 scene: { type: 'maestro' },
+                choices: [{ text: "Retry the choice", next: "music" }]
+            }
+        }
+    },
+    chapter3: {
+        title: "The Modern Heartbeat",
+        startStage: "intro",
+        stages: {
+            intro: {
+                text: "The timeline shifts to the vibrant, chaotic present. On a brightly lit stage, a man with a guitar and a rebellious spirit captures the heart of the youth. It is Zubeen Garg, a modern-day icon.",
+                image: "https://placehold.co/600x300/111827/ffffff?text=Zubeen+Garg",
+                scene: { type: 'modern' },
+                sound: 'modern_beat',
+                choices: [{ text: "Feel the energy of the crowd", next: "concert" }]
+            },
+            concert: {
+                text: "Zubeen is known for his versatile music, blending folk with rock, but also for his outspoken nature. A producer offers him a massive commercial project that could compromise his artistic freedom. What path should he take?",
+                image: "https://placehold.co/600x300/1f2937/ffffff?text=The+Crossroads",
+                scene: { type: 'modern' },
+                choices: [
+                    { text: "Stay true to his independent spirit.", next: "independent_spirit" },
+                    { text: "Take the commercial route for wider reach.", next: "commercial_route" }
+                ]
+            },
+            independent_spirit: {
+                text: "He rejects the offer, continuing to produce music that is raw, honest, and deeply connected to his roots. He remains a powerful, independent voice, proving that success doesn't require compromise. His legacy as 'Zubeen Da' is cemented.",
+                image: "https://placehold.co/600x300/374151/ffffff?text=An+Independent+Icon",
+                scene: { type: 'modern' },
+                sound: 'success',
+                choices: [{ text: "Complete the tapestry", next: "end" }]
+            },
+            commercial_route: {
+                text: "He accepts the deal. His popularity soars, but his core fans feel a disconnect. His music becomes polished but loses some of its edge. A legend is made, but a rebel's fire is tamed. The echo feels faint.",
+                image: "https://placehold.co/600x300/1f2937/c7c7c7?text=The+Price+of+Fame",
+                scene: { type: 'modern' },
+                choices: [{ text: "Retry the choice", next: "concert" }]
+            }
+        }
+    }
+};
+
+// --- GAME LOGIC ---
+function showStage(chapterId, stageId) {
+    gameState.currentChapter = chapterId;
+    gameState.currentStage = stageId;
+
+    if (chapterId === 'end') {
+        gameContainer.classList.add('hidden');
+        endScreen.classList.remove('hidden');
+        return;
+    }
+
+    const chapter = storyData[chapterId];
+    const stage = chapter.stages[stageId];
+
+    // --- Update UI ---
+    storyBoxContent.style.opacity = 0;
+    setTimeout(() => {
+        // Update Image
+        imageContainer.innerHTML = `<img src="${stage.image}" alt="Scene image" class="w-full h-full object-cover">`;
+        
+        // Update Text
+        storyTextElement.textContent = stage.text;
+
+        // Update Choices
+        choicesContainer.innerHTML = '';
+        stage.choices.forEach(choice => {
+            const button = document.createElement('button');
+            button.textContent = choice.text;
+            button.className = "w-full bg-gray-800 p-4 rounded-lg shadow-sm text-left choice-button text-gray-300";
+            button.onclick = () => {
+                const nextChapter = choice.chapter || chapterId;
+                const nextStage = choice.next;
+                // Play sound for the *upcoming* scene
+                const soundToPlay = (nextChapter === 'end') ? 'success' : storyData[nextChapter].stages[nextStage].sound || 'choice';
+                playSound(soundToPlay);
+                showStage(nextChapter, nextStage);
+            };
+            choicesContainer.appendChild(button);
+        });
+        
+        storyBoxContent.style.opacity = 1;
+        storyBoxContent.classList.add('animate-fade-in');
+        setTimeout(() => storyBoxContent.classList.remove('animate-fade-in'), 1200);
+
+    }, 500);
+
+    // Update 3D Scene
+    update3DScene(stage.scene);
+}
+
+
+function startGame() {
+    startScreen.style.display = 'none';
+    endScreen.classList.add('hidden');
+    gameContainer.classList.remove('hidden');
+    if (!renderer) init3D();
+    if (!synth) setupSounds();
+    const firstChapter = "chapter1";
+    const firstStage = storyData[firstChapter].startStage;
+    playSound(storyData[firstChapter].stages[firstStage].sound);
+    showStage(firstChapter, firstStage);
+}
+
+// --- Event Listeners ---
+startButton.addEventListener('click', startGame);
+restartButton.addEventListener('click', startGame);
+window.addEventListener('resize', () => {
+    if (renderer) {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+    }
+});
+
+</script>
+</body>
+</html>
