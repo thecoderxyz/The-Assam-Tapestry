@@ -31,7 +31,7 @@ function App() {
         camera={{ position: [0, 0, 8], fov: 75 }}
         gl={{ antialias: true, alpha: true }}
       >
-        <color attach="background" args={[0x000000, 0]} />
+        <color attach="background" args={[0, 0, 0]} />
         
         {/* Lighting */}
         <ambientLight intensity={0.5} />
