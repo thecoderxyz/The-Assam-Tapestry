@@ -22,12 +22,12 @@ function App() {
 
   return (
     <div 
-      style={{ width: '100vw', height: '100vh', position: 'relative', overflow: 'hidden' }}
+      style={{ width: '100%', minHeight: '100vh', position: 'relative' }}
       onClick={handleFirstInteraction}
     >
-      {/* 3D Background Canvas */}
+      {/* 3D Background Canvas - Fixed position */}
       <Canvas
-        style={{ position: 'fixed', top: 0, left: 0, zIndex: 0 }}
+        style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', zIndex: 0 }}
         camera={{ position: [0, 0, 8], fov: 75 }}
         gl={{ antialias: true, alpha: true }}
       >
@@ -42,8 +42,8 @@ function App() {
         </Suspense>
       </Canvas>
 
-      {/* UI Layer */}
-      <div style={{ position: 'relative', zIndex: 1, width: '100%', height: '100%' }}>
+      {/* UI Layer - Can scroll */}
+      <div style={{ position: 'relative', zIndex: 1, width: '100%', minHeight: '100vh' }}>
         {phase === 'ready' && <StartScreen />}
         {phase === 'playing' && <GameContainer />}
         {phase === 'ended' && <EndScreen />}

@@ -32,7 +32,7 @@ export default function StartScreen() {
   };
 
   return (
-    <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-gray-900 p-4">
+    <div className="w-full min-h-screen flex items-center justify-center bg-gray-900 p-4">
       <div className="text-center px-4 sm:px-6 md:px-8 py-6 sm:py-8 max-w-3xl w-full animate-fade-in">
         <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-teal-300 tiro-bangla-regular mb-2">
           চিৰন্তন প্রতিধ্বনি

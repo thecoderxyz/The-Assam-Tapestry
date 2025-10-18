@@ -11,7 +11,7 @@ export default function EndScreen() {
   };
 
   return (
-    <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-gray-900 p-4">
+    <div className="w-full min-h-screen flex items-center justify-center bg-gray-900 p-4">
       <div className="text-center px-4 sm:px-6 md:px-8 py-6 sm:py-8 max-w-3xl w-full animate-fade-in">
         <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-teal-300 mb-3 sm:mb-4">
           The Tapestry is Woven

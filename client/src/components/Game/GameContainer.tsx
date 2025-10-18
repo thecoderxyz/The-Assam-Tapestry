@@ -21,7 +21,7 @@ export default function GameContainer() {
     <>
       <AchievementsPanel />
       <MusicControls />
-      <div className="min-h-screen w-full flex items-end overflow-y-auto overflow-x-hidden pb-16 sm:pb-20" 
+      <div className="min-h-screen w-full flex items-end pb-16 sm:pb-20" 
            style={{
              background: 'linear-gradient(to top, rgba(17, 24, 39, 1) 0%, rgba(17, 24, 39, 0.8) 50%, rgba(17, 24, 39, 0) 100%)'
            }}>
