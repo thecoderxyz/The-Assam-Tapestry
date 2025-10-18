@@ -44,7 +44,30 @@ export const storyData: { [key: string]: Chapter } = {
         image: "https://placehold.co/600x300/8b5d4a/ffffff?text=Battle+of+Saraighat",
         scene: { type: 'ahom' },
         sound: 'success',
-        choices: [{ text: "Witness the victory", next: "intro", chapter: "chapter2" }]
+        choices: [{ text: "Witness the battle strategy", next: "battle_strategy" }]
+      },
+      battle_strategy: {
+        text: "As the Battle of Saraighat unfolds, Lachit faces a critical decision. The Mughal navy approaches with overwhelming force. Should he engage them in open water or use the narrow channels of the Brahmaputra to his advantage?",
+        image: "https://placehold.co/600x300/6b4d3a/ffffff?text=The+Strategic+Choice",
+        scene: { type: 'ahom' },
+        choices: [
+          { text: "Use the narrow channels strategically", next: "narrow_victory" },
+          { text: "Face them in open water with courage", next: "open_battle" }
+        ]
+      },
+      narrow_victory: {
+        text: "Lachit's brilliant use of terrain proves decisive. The Mughal fleet becomes disorganized in the narrow channels, and the Ahom forces achieve a legendary victory. This moment becomes immortalized in history as one of the greatest naval victories ever fought on Indian rivers.",
+        image: "https://placehold.co/600x300/8b5d4a/ffffff?text=Historic+Victory",
+        scene: { type: 'ahom' },
+        sound: 'success',
+        choices: [{ text: "Journey to the next era", next: "intro", chapter: "chapter2" }]
+      },
+      open_battle: {
+        text: "Though courageous, the open water battle proves costly. The Ahom forces take heavy casualties but eventually prevail through sheer determination. Victory is won, but at a great price that could have been avoided with better strategy.",
+        image: "https://placehold.co/600x300/7b4d3a/c0c0c0?text=Costly+Victory",
+        scene: { type: 'ahom' },
+        sound: 'war_horn',
+        choices: [{ text: "Reflect and move forward", next: "intro", chapter: "chapter2" }]
       },
       cautious_general: {
         text: "The cautious general fails to inspire the troops. Disunity spreads, and the Ahom forces are unable to reclaim their territory. A pivotal moment is lost. Your thread unravels... but the tapestry of time allows you to weave again.",
@@ -77,6 +100,13 @@ export const storyData: { [key: string]: Chapter } = {
       global_voice: {
         text: "He travels the world, becoming a cultural ambassador. His song 'Bistirno Parore' becomes a global anthem for humanism. He proves that a voice from the Brahmaputra valley can resonate in every corner of the earth.",
         image: "https://placehold.co/600x300/4a6c8c/ffffff?text=A+Voice+for+the+World",
+        scene: { type: 'maestro' },
+        sound: 'melody_note',
+        choices: [{ text: "Experience his final performance", next: "final_performance" }]
+      },
+      final_performance: {
+        text: "Years later, in one of his final concerts, Bhupen stands before thousands. His voice still powerful, his message timeless. As he sings 'Manuhe Manuhor Babe', tears flow freely. His legacy is secure—he has become the eternal voice of Assam and beyond.",
+        image: "https://placehold.co/600x300/5a7c9c/ffffff?text=The+Eternal+Voice",
         scene: { type: 'maestro' },
         sound: 'success',
         choices: [{ text: "Follow the next echo", next: "intro", chapter: "chapter3" }]
@@ -112,6 +142,13 @@ export const storyData: { [key: string]: Chapter } = {
       independent_spirit: {
         text: "He rejects the offer, continuing to produce music that is raw, honest, and deeply connected to his roots. He remains a powerful, independent voice, proving that success doesn't require compromise. His legacy as 'Zubeen Da' is cemented.",
         image: "https://placehold.co/600x300/374151/ffffff?text=An+Independent+Icon",
+        scene: { type: 'modern' },
+        sound: 'modern_beat',
+        choices: [{ text: "Witness his impact", next: "cultural_impact" }]
+      },
+      cultural_impact: {
+        text: "Zubeen's independence inspires a new generation of artists. They see that staying true to one's roots can be more powerful than chasing fame. The Assamese music scene flourishes with authentic voices, each carrying forward the torch of cultural pride he helped light.",
+        image: "https://placehold.co/600x300/475161/ffffff?text=A+New+Generation",
         scene: { type: 'modern' },
         sound: 'success',
         choices: [{ text: "Complete the tapestry", next: "end" }]
