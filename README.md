@@ -1,6 +1,6 @@
 <div id="top" align="center">
 
-<img src="https://media.giphy.com/media/3o6Zt8MgUuvSbkZYWc/giphy.gif" width="900" height="250" style="border-radius: 12px;" alt="The Assam Tapestry Banner"/>
+<img src="AQOSXsHlKJJdq3d3GzXxPU4jkn4XPEubQFU3bJ2In8uCp1kzItFnBOFb0kbocz-wJQBvfrNW_2Zt-5V7YLUnMIa3hp9nreX2OijjzY9B2mfErnxrV13gNCAjesTz0tUs.mp4" width="900" height="250" style="border-radius: 12px;" alt="The Assam Tapestry Banner"/>
 
 # ðŸ§µ The Assam Tapestry  
 ### *An interactive historical fiction game where your choices weave the destiny of Assam.*
